@@ -6,6 +6,7 @@ import com.example.exam.exam.model.ResponseDto.QuestionResponseDto;
 import com.example.exam.exam.model.ResponseDto.SimpleMessageDto;
 import com.example.exam.exam.service.QuestionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,11 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    public SimpleMessageDto<QuestionRequestDto> addQuestion(@RequestBody QuestionRequestDto questionRequestDto) throws JsonProcessingException {
-        questionService.addQuestion(questionRequestDto);
-        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value());
-    }
+        @PostMapping(consumes = "application/json", produces = "application/json")
+        public SimpleMessageDto<QuestionRequestDto> addQuestion(@Valid @RequestBody QuestionRequestDto questionRequestDto) throws JsonProcessingException {
+            questionService.addQuestion(questionRequestDto);
+            return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value());
+        }
 
     @GetMapping
     public SimpleMessageDto<List<QuestionResponseDto>> getQuestions() {

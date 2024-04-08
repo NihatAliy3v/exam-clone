@@ -1,6 +1,7 @@
 package com.example.exam.exam.dao.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +18,7 @@ public class OptionEntity {
     @SequenceGenerator(name = "option_seq_generator", sequenceName = "option_SEQ", allocationSize = 1)
     Long id;
 
+    @NotBlank(message = "Option name cannot be empty")
     String name;
 
     @Builder.Default

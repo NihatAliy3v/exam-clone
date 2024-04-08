@@ -1,5 +1,6 @@
 package com.example.exam.exam.model.RequestDto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class OptionRequestDto {
 
+    @NotBlank(message = "dwdwed")
     String name;
 
     @Builder.Default

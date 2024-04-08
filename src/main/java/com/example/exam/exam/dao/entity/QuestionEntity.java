@@ -2,7 +2,9 @@ package com.example.exam.exam.dao.entity;
 
 
 import com.example.exam.exam.dao.entity.enums.QuestionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -29,13 +31,16 @@ public class QuestionEntity {
 
     byte score;
 
-
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(referencedColumnName = "id", name = "subject_id")
     SubjectEntity subjectEntity;
 
-    @OneToMany(mappedBy = "questionEntity",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("questionEntity")
     List<OptionEntity> optionEntities;
+
+    @ManyToMany(mappedBy = "questionEntities")
+    @JsonIgnore
+    List<ExamEntity> examEntities;
 
 }

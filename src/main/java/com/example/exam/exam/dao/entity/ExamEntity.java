@@ -3,7 +3,9 @@ package com.example.exam.exam.dao.entity;
 import com.example.exam.exam.dao.entity.enums.ExamPersonType;
 import com.example.exam.exam.dao.entity.enums.ExamStatus;
 import com.example.exam.exam.dao.entity.enums.ExamTimeType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -70,8 +72,11 @@ public class ExamEntity {
             joinColumns = @JoinColumn(name = "exam_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id")
     )
-    List<QuestionEntity> questionEntities;
+    private List<QuestionEntity> questionEntities;
 
+    @OneToMany(mappedBy = "examEntity")
+    @JsonIgnoreProperties("examEntity")
+    List<ExamDescriptionEntity> examDescriptionEntities;
 }
 
 

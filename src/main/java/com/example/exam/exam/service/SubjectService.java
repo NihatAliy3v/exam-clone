@@ -4,6 +4,7 @@ import com.example.exam.exam.dao.entity.LogEntity;
 import com.example.exam.exam.dao.entity.SubjectEntity;
 import com.example.exam.exam.dao.repository.LogMessageRepository;
 import com.example.exam.exam.dao.repository.SubjectRepository;
+import com.example.exam.exam.exception.CustomerException;
 import com.example.exam.exam.mapper.SubjectMapper;
 import com.example.exam.exam.model.RequestDto.SubjectRequestDto;
 import com.example.exam.exam.model.ResponseDto.SubjectResponseDto;
@@ -21,20 +22,25 @@ public class SubjectService {
 
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
-    private final LogMessageRepository logMessageRepository;
 
     public void addSubject(SubjectRequestDto subjectRequestDto) {
         log.info("ActionLog.start subject add method");
 
+
+
+        if (!subjectRepository.findAll().isEmpty()) {
+            List<SubjectEntity> subjectEntities = subjectRepository.findAll();
+
+            for (var subject : subjectEntities) {
+                if (subjectRequestDto.getName().equals(subject.getName())) {
+                    throw new CustomerException("Bu fənn artıq yaradılıb");
+                }
+            }
+        }
+
         SubjectEntity subjectEntity = subjectMapper.dtoToEntity(subjectRequestDto);
         subjectRepository.save(subjectEntity);
 
-        LogEntity logMessage = new LogEntity();
-        logMessage.setLog_level("INFO");
-        logMessage.setLo_message("Yeni fənn yaradıldı: " + subjectRequestDto);
-        logMessage.setLocalDateTime(LocalDateTime.now());
-        //  logMessage.setUserId(AdminHelper.getCurrentAdminIdAndUsername());
-        logMessageRepository.save(logMessage);
 
         log.info("ActionLog.end subject add method");
     }

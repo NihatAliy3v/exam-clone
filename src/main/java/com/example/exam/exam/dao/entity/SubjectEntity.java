@@ -1,5 +1,6 @@
 package com.example.exam.exam.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -25,6 +26,7 @@ public class SubjectEntity {
     @OneToMany(mappedBy = "subjectEntity")
     List<QuestionEntity> questionEntities;
 
-
-
+    @OneToMany(mappedBy = "subjectEntity")
+    @JsonIgnoreProperties("subjectEntity")
+    List<ExamDescriptionEntity> examDescriptionEntities;
 }

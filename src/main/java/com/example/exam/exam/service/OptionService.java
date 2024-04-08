@@ -29,12 +29,7 @@ public class OptionService {
 
         optionRepository.save(optionMapper.dtoToEntity(optionRequestDto));
 
-        LogEntity logMessage = new LogEntity();
-        logMessage.setLog_level("INFO");
-        logMessage.setLo_message("Yeni variant yaradıldı: " + optionRequestDto);
-        logMessage.setLocalDateTime(LocalDateTime.now());
-        //  logMessage.setUserId(AdminHelper.getCurrentAdminIdAndUsername());
-        logMessageRepository.save(logMessage);
+
 
         log.info("ActionLog.end question add method");
     }

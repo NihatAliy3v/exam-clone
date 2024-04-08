@@ -8,6 +8,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class ExamRequestDto {
+public class    ExamRequestDto {
 
     String name;
 
@@ -29,6 +30,7 @@ public class ExamRequestDto {
     @Temporal(TemporalType.DATE)
     Date endTime;
 
+    @Min(value = 1,message = "İmtahan müddətini yazın")
     int expirationTime;
 
     @Enumerated(EnumType.STRING)

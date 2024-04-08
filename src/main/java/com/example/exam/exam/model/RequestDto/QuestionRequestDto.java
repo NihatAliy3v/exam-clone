@@ -1,29 +1,35 @@
-    package com.example.exam.exam.model.RequestDto;
+package com.example.exam.exam.model.RequestDto;
 
-    import com.example.exam.exam.dao.entity.enums.QuestionType;
-    import jakarta.persistence.EnumType;
-    import jakarta.persistence.Enumerated;
-    import lombok.*;
-    import lombok.experimental.FieldDefaults;
+import com.example.exam.exam.dao.entity.enums.QuestionType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-    import java.util.List;
+import java.util.List;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Builder
-    public class QuestionRequestDto {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
+public class QuestionRequestDto {
 
-        String name;
+    @NotBlank(message = "Sualın adını yazın")
+    String name;
 
-        byte score;
+
+    byte score;
 
 
-        Long subjectId;
+    Long subjectId;
 
-        @Enumerated(EnumType.STRING)
-        QuestionType questionType;
+    @Enumerated(EnumType.STRING)
+    QuestionType questionType;
 
-        List<OptionRequestDto> options;
-    }
+    @NotNull(message = "Option alanı boş olamaz")
+    List<OptionRequestDto> options;
+}

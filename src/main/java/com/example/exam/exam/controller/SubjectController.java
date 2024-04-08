@@ -4,6 +4,7 @@ import com.example.exam.exam.model.RequestDto.SubjectRequestDto;
 import com.example.exam.exam.model.ResponseDto.SimpleMessageDto;
 import com.example.exam.exam.model.ResponseDto.SubjectResponseDto;
 import com.example.exam.exam.service.SubjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,9 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public SimpleMessageDto<SubjectRequestDto> addSubject(@RequestBody SubjectRequestDto subjectRequestDto) {
+    public SimpleMessageDto<SubjectRequestDto> addSubject(@Valid  @RequestBody SubjectRequestDto subjectRequestDto) {
         subjectService.addSubject(subjectRequestDto);
-        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value());
+        return new SimpleMessageDto<>("Fənn əlavə edildi", HttpStatus.CREATED.value());
     }
 
     @GetMapping
