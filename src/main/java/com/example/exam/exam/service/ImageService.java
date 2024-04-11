@@ -26,9 +26,8 @@ public class ImageService {
     private final ImageMapper imageMapper;
     private final LogMessageRepository logMessageRepository;
 
-        public void uploadImage(List<MultipartFile> imageFiles, Long examId,Long questionId) throws IOException {
+        public void uploadImage(MultipartFile imageFile, Long examId,Long questionId) throws IOException {
 
-        for (MultipartFile imageFile : imageFiles) {
 
             var imageToSave = ImageRequestDto.builder()
                     .name(imageFile.getOriginalFilename())
@@ -39,7 +38,7 @@ public class ImageService {
                     .questionId(questionId)
                     .build();
             imageRepository.save(imageMapper.dtoToEntity(imageToSave));
-        }
+
 
     }
 

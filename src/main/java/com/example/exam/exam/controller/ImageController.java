@@ -21,7 +21,7 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping(consumes = "multipart/form-data", produces = "application/json")
-    public void  uploadImage(@RequestParam("image") List<MultipartFile> file, @RequestParam("examId") Long examId,@RequestParam("questionId") Long questionId) throws IOException {
+    public void  uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("examId") Long examId,@RequestParam("questionId") Long questionId) throws IOException {
         imageService.uploadImage(file,examId,questionId);
     }
 
