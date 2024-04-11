@@ -1,5 +1,6 @@
 package com.example.exam.exam.service;
 
+import com.example.exam.exam.dao.entity.ExamDescriptionEntity;
 import com.example.exam.exam.dao.entity.OptionEntity;
 import com.example.exam.exam.dao.entity.QuestionEntity;
 import com.example.exam.exam.dao.repository.OptionRepository;
@@ -66,6 +67,7 @@ return questionEntity.getId();
         List<QuestionEntity> questionEntities = questionRepository.findAllBySubjectEntityId(subId);
         return questionMapper.entityToDtos(questionEntities);
     }
+
 }
 
 //    public List<Long> rastgeleSayilarUret(int altSinir, int ustSinir, int miktar, Long subjectId, QuestionType questionType) {

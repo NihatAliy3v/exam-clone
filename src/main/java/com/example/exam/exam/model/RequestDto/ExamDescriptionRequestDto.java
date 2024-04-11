@@ -17,8 +17,6 @@ public class ExamDescriptionRequestDto {
 
     int questionScore;
 
-    //Long ruleId;
-
     List<Long> questionsId;
 
     Long examId;

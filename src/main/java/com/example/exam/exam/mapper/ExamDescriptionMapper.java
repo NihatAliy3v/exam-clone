@@ -15,20 +15,18 @@ public interface ExamDescriptionMapper {
 
     @Mapping(target = "questionEntities", expression = "java(mapQuestion(examDescriptionRequestDto.getQuestionsId()))")
     @Mapping(target = "examEntity", expression = "java(mapExam(examDescriptionRequestDto.getExamId()))")
-    @Mapping(target = "examRuleEntity",expression = "java(mapRule(examDescriptionRequestDto.getRuleId()))")
+    @Mapping(target = "examRuleEntity", expression = "java(mapRule(examDescriptionRequestDto.getRuleId()))")
     @Mapping(target = "subjectEntity", expression = "java(mapSubject(examDescriptionRequestDto.getSubjectId()))")
     ExamDescriptionEntity dtoToEntity(ExamDescriptionRequestDto examDescriptionRequestDto);
 
 
-    //@Mapping(target = "personEntities",expression = "java(mapPerson(examRequestDto.getPersonId()))")
+    @Mapping(target = "examId", source = "examEntity.id")
+    //@Mapping(target = "ruleId", expression = "java(mapRule(examDescriptionRequestDto.getRuleId()))")
+    @Mapping(target = "subjectId", source = "subjectEntity.id")
+    @Mapping(target = "questionsId",expression = "java(mapQuestions(examDescriptionEntity.getQuestionEntities()))")
+    ExamDescriptionResponseDto entityToDto(ExamDescriptionEntity examDescriptionEntity);
 
-//    @Mapping(target = "questionsId", source = "questionEntities")
-//    @Mapping(target = "examId", source = "examEntity")
-//    @Mapping(target = "subjectId", source = "subjectEntity")
-//    ExamDescriptionResponseDto entityToDto(ExamDescriptionEntity examDescriptionEntity);
-
-//    List<ExamDescriptionResponseDto> entityToDto(List<ExamDescriptionEntity> examDescriptionEntities);
-
+    List<ExamDescriptionResponseDto> entityToDto(List<ExamDescriptionEntity> examDescriptionEntities);
 
 
     default ExamEntity mapExam(Long exId) {
@@ -42,6 +40,7 @@ public interface ExamDescriptionMapper {
         academicDegreeEntity.setId(ruleId);
         return academicDegreeEntity;
     }
+
     default SubjectEntity mapSubject(Long subId) {
         SubjectEntity academicDegreeEntity = new SubjectEntity();
         academicDegreeEntity.setId(subId);
@@ -57,32 +56,11 @@ public interface ExamDescriptionMapper {
                 })
                 .collect(Collectors.toList());
     }
-//
-//    default List<Long> mapQuestions(List<QuestionEntity> academicDegreeEntities) {
-//        return academicDegreeEntities.stream()
-//                .map(QuestionEntity::getId)
-//                .collect(Collectors.toList());
-//    }
-//
-//    default List<Long> mapEmployees(List<EmployeeDocumentsEntity> academicDegreeEntities) {
-//        return academicDegreeEntities.stream()
-//                .map(EmployeeDocumentsEntity::getEmpId)
-//                .collect(Collectors.toList());
-//    }
-//
-//    default List<PersonEntity> mapPerson(List<Long> personId) {
-//        return personId.stream()
-//                .map(id -> {
-//                    PersonEntity academicDegreeEntity = new PersonEntity();
-//                    academicDegreeEntity.setId(id);
-//                    return academicDegreeEntity;
-//                })
-//                .collect(Collectors.toList());
-//    }
-//
-//    default List<Long> mapPersons(List<PersonEntity> personEntities) {
-//        return personEntities.stream()
-//                .map(PersonEntity::getId)
-//                .collect(Collectors.toList());
-//    }
+
+
+    default List<Long> mapQuestions(List<QuestionEntity> questionEntities) {
+        return questionEntities.stream()
+                .map(QuestionEntity::getId)
+                .collect(Collectors.toList());
+    }
 }

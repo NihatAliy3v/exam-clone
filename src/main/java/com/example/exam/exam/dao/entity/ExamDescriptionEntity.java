@@ -36,7 +36,7 @@ public class ExamDescriptionEntity {
     @JoinColumn(name = "rule_id", referencedColumnName = "id")
     ExamRuleEntity examRuleEntity;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "descryption_question",
             joinColumns = @JoinColumn(name = "descprytion_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id")

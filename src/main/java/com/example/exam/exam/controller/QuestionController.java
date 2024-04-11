@@ -1,5 +1,6 @@
 package com.example.exam.exam.controller;
 
+import com.example.exam.exam.dao.entity.ExamDescriptionEntity;
 import com.example.exam.exam.model.RequestDto.QuestionRequestDto;
 import com.example.exam.exam.model.ResponseDto.QuestionResponseDto;
 import com.example.exam.exam.model.ResponseDto.SimpleMessageDto;
@@ -38,6 +39,7 @@ public class QuestionController {
                 HttpStatus.OK.value(),
                 questionService.getQuestionsBySubjectId(id));
     }
+
 
 //    @PostMapping("/randomQuestions")
 //    public SimpleMessageDto<List<Long>> rastgeleSayilarUret(int altSinir, int ustSinir, int miktar, Long subjectId, QuestionType questionType) {

@@ -17,11 +17,11 @@ public class ExamDescriptionResponseDto {
 
     int questionScore;
 
-    //Long ruleId;
-
     List<Long> questionsId;
 
     Long examId;
+
+//    Long ruleId;
 
     Long subjectId;
 }

@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,6 +26,7 @@ public class ExamDescriptionService {
 
     private final ExamDescriptionMapper examDescriptionMapper;
     private final ExamDescriptionRepository examDescriptionRepository;
+    private final QuestionRepository questionRepository;
     public void addExamQuestions(ExamDescriptionRequestDto examDescriptionRequestDto) {
         log.info("ActionLog.start exam add method");
 
@@ -33,33 +36,22 @@ public class ExamDescriptionService {
         log.info("ActionLog.end exam add method");
     }
 
-//    public ExamEntity getExam(Long id) {
-//        log.info("ActionLog.start exam get method with id: {}", id);
-//
-//        ExamEntity examEntity = examRepository.findById(id).get();
-//
-//        List<QuestionEntity> questions=questionRepository.findAllByExamEntitiesId(examEntity.getId());
-//
-//        for (QuestionEntity question : questions) {
-//            // Sorunun seçeneklerini çek
-//            List<OptionEntity> options = optionRepository.findAllByQuestionEntityId(question.getId());
-//            question.setOptionEntities(options);
-//        }
-//
-//        examEntity.setQuestionEntities(questions);
-//
-//        log.info("ActionLog.end exam get method with id: {}", id);
-//        return examEntity;
-//    }
-//
-//
-//    public List<ExamResponseDto> getExams() {
-//        log.info("ActionLog.start exam get method");
-//
-//        List<ExamEntity> examEntities=examRepository.findAll();
-//
-//        log.info("ActionLog.end exam get method");
-//        return examMapper.entityToDto(examEntities);
-//    }
+    public List<ExamDescriptionResponseDto> getDescription(Long examId) {
+        List<ExamDescriptionEntity> examDescriptionEntities = examDescriptionRepository.findByExamEntityId(examId);
+        List<ExamDescriptionResponseDto> examDescriptionResponseDtos = new ArrayList<>();
 
+        for (var desc : examDescriptionEntities) {
+            List<QuestionEntity> questionEntities = questionRepository.findAllByExamDescriptionEntities(desc);
+            desc.setQuestionEntities(questionEntities);
+            examDescriptionResponseDtos.add(examDescriptionMapper.entityToDto(desc));
+        }
+
+        return examDescriptionResponseDtos;
+    }
+
+    public List<ExamDescriptionResponseDto> getDescription(){
+        List<ExamDescriptionEntity> examDescriptionEntities=examDescriptionRepository.findAll();
+
+        return examDescriptionMapper.entityToDto(examDescriptionEntities);
+    }
 }
