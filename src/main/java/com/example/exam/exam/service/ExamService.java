@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,25 +35,23 @@ public class ExamService {
 
         LocalDate bugun = LocalDate.now();
 
-        LocalDate examStartTime = ((java.sql.Date) examRequestDto.getStartTime()).toLocalDate();
+        Date examStartTime = examRequestDto.getStartTime();
 
-        String type= String.valueOf(examRequestDto.getExamTimeType());
+        String type = String.valueOf(examRequestDto.getExamTimeType());
 
-        if (type.equals("MUDDETSIZ")){
-            examRequestDto.setExamStatus(ExamStatus.ACTIVE);
-        }else if (examStartTime.isEqual(bugun)){
-         examRequestDto.setExamStatus(ExamStatus.ACTIVE);
-        } else  {
-            examRequestDto.setExamStatus(ExamStatus.PENDING);
+        ExamStatus examStatus;
+        if (type.equals("MUDDETSIZ") || examStartTime.equals(bugun)) {
+            examStatus = ExamStatus.ACTIVE;
+        } else {
+            examStatus = ExamStatus.PENDING;
         }
 
+        examRequestDto.setExamStatus(examStatus);
 
         ExamEntity examEntity = examMapper.dtoToEntity(examRequestDto);
 
-
         log.info("ActionLog.end exam add method");
         return examRepository.save(examEntity);
-
     }
 
     public ExamResponseDto getExam(Long id) {
