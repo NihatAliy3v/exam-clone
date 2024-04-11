@@ -21,7 +21,7 @@ public class ExamDescriptionRequestDto {
 
     Long examId;
 
-    Long ruleId;
+//    Long ruleId;
 
     Long subjectId;
 }
