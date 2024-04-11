@@ -7,6 +7,7 @@ import com.example.exam.exam.dao.entity.QuestionEntity;
 import com.example.exam.exam.dao.repository.*;
 import com.example.exam.exam.mapper.ExamDescriptionMapper;
 import com.example.exam.exam.mapper.ExamMapper;
+import com.example.exam.exam.mapper.QuestionMapper;
 import com.example.exam.exam.model.RequestDto.ExamDescriptionRequestDto;
 import com.example.exam.exam.model.RequestDto.ExamRequestDto;
 import com.example.exam.exam.model.ResponseDto.ExamDescriptionResponseDto;
@@ -25,8 +26,10 @@ import java.util.List;
 public class ExamDescriptionService {
 
     private final ExamDescriptionMapper examDescriptionMapper;
+    private final QuestionMapper questionMapper ;
     private final ExamDescriptionRepository examDescriptionRepository;
     private final QuestionRepository questionRepository;
+    private final OptionRepository optionRepository;
     public void addExamQuestions(ExamDescriptionRequestDto examDescriptionRequestDto) {
         log.info("ActionLog.start exam add method");
 
@@ -42,6 +45,13 @@ public class ExamDescriptionService {
 
         for (var desc : examDescriptionEntities) {
             List<QuestionEntity> questionEntities = questionRepository.findAllByExamDescriptionEntities(desc);
+
+            for (var question : questionEntities) {
+                List<OptionEntity> optionEntities = optionRepository.findAllByQuestionEntityId(question.getId());
+                System.out.println(optionEntities);
+                question.setOptionEntities(optionEntities);
+            }
+
             desc.setQuestionEntities(questionEntities);
             examDescriptionResponseDtos.add(examDescriptionMapper.entityToDto(desc));
         }

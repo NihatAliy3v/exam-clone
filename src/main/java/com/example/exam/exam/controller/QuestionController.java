@@ -40,7 +40,12 @@ public class QuestionController {
                 questionService.getQuestionsBySubjectId(id));
     }
 
-
+    @GetMapping("/tets/{id}")
+    public SimpleMessageDto<List<QuestionResponseDto>> getQuestionsBySubject(@PathVariable Long id) {
+        return new SimpleMessageDto<>(HttpStatus.OK.getReasonPhrase(),
+                HttpStatus.OK.value(),
+                questionService.getQuestionsByDesc(id));
+    }
 //    @PostMapping("/randomQuestions")
 //    public SimpleMessageDto<List<Long>> rastgeleSayilarUret(int altSinir, int ustSinir, int miktar, Long subjectId, QuestionType questionType) {
 //        return new SimpleMessageDto<>("Suallar uğurla əlavə edildiç.",

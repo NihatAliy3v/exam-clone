@@ -1,6 +1,7 @@
 package com.example.exam.exam.model.ResponseDto;
 
 
+import com.example.exam.exam.model.RequestDto.QuestionRequestDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,7 +18,7 @@ public class ExamDescriptionResponseDto {
 
     int questionScore;
 
-    List<Long> questionsId;
+    List<QuestionResponseDto> questionsId;
 
     Long examId;
 

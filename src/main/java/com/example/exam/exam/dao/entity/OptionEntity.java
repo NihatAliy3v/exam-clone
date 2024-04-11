@@ -1,5 +1,8 @@
 package com.example.exam.exam.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -25,6 +28,7 @@ public class OptionEntity {
     Boolean type=false;
 
     @ManyToOne
+    @JsonIgnoreProperties("optionEntities")
     @JoinColumn(name = "question_id")
     QuestionEntity questionEntity;
 

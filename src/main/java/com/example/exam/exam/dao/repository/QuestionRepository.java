@@ -10,5 +10,7 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<QuestionEntity,Long> {
     List<QuestionEntity> findAllBySubjectEntityId(Long subId);
     List<QuestionEntity> findAllByExamDescriptionEntities(ExamDescriptionEntity descriptionEntity);
+    List<QuestionEntity> findAllByExamDescriptionEntitiesId(Long id);
+
 
 }

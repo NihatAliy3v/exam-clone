@@ -15,7 +15,7 @@ public interface ExamDescriptionMapper {
 
     @Mapping(target = "questionEntities", expression = "java(mapQuestion(examDescriptionRequestDto.getQuestionsId()))")
     @Mapping(target = "examEntity", expression = "java(mapExam(examDescriptionRequestDto.getExamId()))")
-    @Mapping(target = "examRuleEntity", expression = "java(mapRule(examDescriptionRequestDto.getRuleId()))")
+    //  @Mapping(target = "examRuleEntity", expression = "java(mapRule(examDescriptionRequestDto.getRuleId()))")
     @Mapping(target = "subjectEntity", expression = "java(mapSubject(examDescriptionRequestDto.getSubjectId()))")
     ExamDescriptionEntity dtoToEntity(ExamDescriptionRequestDto examDescriptionRequestDto);
 
@@ -23,7 +23,7 @@ public interface ExamDescriptionMapper {
     @Mapping(target = "examId", source = "examEntity.id")
     //@Mapping(target = "ruleId", expression = "java(mapRule(examDescriptionRequestDto.getRuleId()))")
     @Mapping(target = "subjectId", source = "subjectEntity.id")
-    @Mapping(target = "questionsId",expression = "java(mapQuestions(examDescriptionEntity.getQuestionEntities()))")
+    @Mapping(target = "questionsId",source = "questionEntities")
     ExamDescriptionResponseDto entityToDto(ExamDescriptionEntity examDescriptionEntity);
 
     List<ExamDescriptionResponseDto> entityToDto(List<ExamDescriptionEntity> examDescriptionEntities);

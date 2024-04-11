@@ -68,6 +68,11 @@ return questionEntity.getId();
         return questionMapper.entityToDtos(questionEntities);
     }
 
+    public List<QuestionResponseDto> getQuestionsByDesc(Long examDescriptionEntity) {
+
+        List<QuestionEntity> questionEntities = questionRepository.findAllByExamDescriptionEntitiesId(examDescriptionEntity);
+        return questionMapper.entityToDtos(questionEntities);
+    }
 }
 
 //    public List<Long> rastgeleSayilarUret(int altSinir, int ustSinir, int miktar, Long subjectId, QuestionType questionType) {
