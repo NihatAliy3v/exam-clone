@@ -1,7 +1,5 @@
 package com.example.exam.exam.controller;
 
-import com.example.exam.exam.dao.entity.QuestionEntity;
-import com.example.exam.exam.dao.entity.enums.QuestionType;
 import com.example.exam.exam.model.RequestDto.QuestionRequestDto;
 import com.example.exam.exam.model.ResponseDto.QuestionResponseDto;
 import com.example.exam.exam.model.ResponseDto.SimpleMessageDto;
