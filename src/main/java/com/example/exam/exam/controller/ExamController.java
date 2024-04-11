@@ -34,7 +34,7 @@ public class ExamController {
     }
 
     @GetMapping("/{id}")
-    public SimpleMessageDto<ExamEntity> getExam(@PathVariable Long id) {
+    public SimpleMessageDto<ExamResponseDto> getExam(@PathVariable Long id) {
         return new SimpleMessageDto<>(HttpStatus.OK.getReasonPhrase(),
                 HttpStatus.OK.value(),
                 examService.getExam(id));

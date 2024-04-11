@@ -46,6 +46,5 @@ public class    ExamRequestDto {
 
     List<Long> personId;
 
-    List<Long> questionId;
 
 }

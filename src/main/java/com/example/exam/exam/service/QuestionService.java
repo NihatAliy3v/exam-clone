@@ -25,7 +25,7 @@ public class QuestionService {
     private final OptionRepository optionRepository;
 
 
-    public void addQuestion(QuestionRequestDto questionRequestDto) throws JsonProcessingException {
+    public Long addQuestion(QuestionRequestDto questionRequestDto) throws JsonProcessingException {
         log.info("ActionLog.start question add method");
 
         QuestionEntity questionEntity=questionMapper.dtoToEntity(questionRequestDto);
@@ -42,7 +42,7 @@ public class QuestionService {
                 }
             }
 
-
+return questionEntity.getId();
     }
 
     public List<QuestionResponseDto> getQuestions() {

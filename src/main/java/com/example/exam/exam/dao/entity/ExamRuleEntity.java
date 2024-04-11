@@ -30,6 +30,10 @@ public class ExamRuleEntity {
 
     int falseCount;
 
+    @OneToMany(mappedBy = "examRuleEntity")
+    @JsonIgnoreProperties("examRuleEntity")
+    List<ExamDescriptionEntity> examDescriptionEntities;
+
 }
 
 

@@ -46,9 +46,6 @@ public class ExamEntity {
     @Enumerated(EnumType.STRING)
     ExamTimeType examTimeType;
 
-    @Builder.Default
-    Boolean answerStatus = false;
-
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "exam_employees",
             joinColumns = @JoinColumn(name = "exam_id", referencedColumnName = "id"),
@@ -67,12 +64,6 @@ public class ExamEntity {
     @JsonIgnoreProperties("examEntity")
     List<Image> imageEntities;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "exam_question",
-            joinColumns = @JoinColumn(name = "exam_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id")
-    )
-    private List<QuestionEntity> questionEntities;
 
     @OneToMany(mappedBy = "examEntity")
     @JsonIgnoreProperties("examEntity")

@@ -32,12 +32,18 @@ public class ExamDescriptionEntity {
     @JoinColumn(name = "exam_id", referencedColumnName = "id")
     ExamEntity examEntity;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "rule_id", referencedColumnName = "id")
+    ExamRuleEntity examRuleEntity;
+
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "descryption_question",
             joinColumns = @JoinColumn(name = "descprytion_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id")
     )
     List<QuestionEntity> questionEntities;
+
+
 
     int questionScore;
 }

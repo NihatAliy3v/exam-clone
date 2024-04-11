@@ -22,8 +22,11 @@ public class QuestionResponseDto {
 
     Long subjectId;
 
+    ImageResponseDto imageDto;
+
     QuestionType questionType;
 
     List<OptionResponseDto> options;
+
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.zip.DataFormatException;
 
@@ -25,24 +26,21 @@ public class ImageService {
     private final ImageMapper imageMapper;
     private final LogMessageRepository logMessageRepository;
 
-    public String uploadImage(MultipartFile imageFile,Long id) throws IOException {
-        var imageToSave = ImageRequestDto.builder()
-                .name(imageFile.getOriginalFilename())
-                .type(imageFile.getContentType())
-                .imageData(ImageUtils.compressImage(imageFile.getBytes()))
-                .url("http://localhost:8083/image/"+imageFile.getOriginalFilename())
-                .examId(id)
-                .build();
-        imageRepository.save(imageMapper.dtoToEntity(imageToSave));
+        public void uploadImage(List<MultipartFile> imageFiles, Long examId,Long questionId) throws IOException {
 
-        LogEntity logMessage = new LogEntity();
-        logMessage.setLog_level("INFO");
-        logMessage.setLo_message("Yeni şekil yaradıldı: " + imageFile.getOriginalFilename());
-        logMessage.setLocalDateTime(LocalDateTime.now());
-        //  logMessage.setUserId(AdminHelper.getCurrentAdminIdAndUsername());
-        logMessageRepository.save(logMessage);
+        for (MultipartFile imageFile : imageFiles) {
 
-        return "file uploaded successfully : " + imageFile.getOriginalFilename();
+            var imageToSave = ImageRequestDto.builder()
+                    .name(imageFile.getOriginalFilename())
+                    .type(imageFile.getContentType())
+                    .imageData(ImageUtils.compressImage(imageFile.getBytes()))
+                    .url("http://localhost:8083/image/" + imageFile.getOriginalFilename())
+                    .examId(examId)
+                    .questionId(questionId)
+                    .build();
+            imageRepository.save(imageMapper.dtoToEntity(imageToSave));
+        }
+
     }
 
     public byte[] downloadImage(String imageName) {

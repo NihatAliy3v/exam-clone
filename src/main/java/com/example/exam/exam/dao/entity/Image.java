@@ -32,4 +32,8 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "exam_id", referencedColumnName = "id")
     ExamEntity examEntity;
+
+    @OneToOne
+    @JoinColumn(name = "question_id")
+    QuestionEntity questionEntity;
 }

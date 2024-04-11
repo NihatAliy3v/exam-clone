@@ -15,6 +15,7 @@ public interface ExamDescriptionMapper {
 
     @Mapping(target = "questionEntities", expression = "java(mapQuestion(examDescriptionRequestDto.getQuestionsId()))")
     @Mapping(target = "examEntity", expression = "java(mapExam(examDescriptionRequestDto.getExamId()))")
+    @Mapping(target = "examRuleEntity",expression = "java(mapRule(examDescriptionRequestDto.getRuleId()))")
     @Mapping(target = "subjectEntity", expression = "java(mapSubject(examDescriptionRequestDto.getSubjectId()))")
     ExamDescriptionEntity dtoToEntity(ExamDescriptionRequestDto examDescriptionRequestDto);
 
@@ -36,7 +37,11 @@ public interface ExamDescriptionMapper {
         return academicDegreeEntity;
     }
 
-
+    default ExamRuleEntity mapRule(Long ruleId) {
+        ExamRuleEntity academicDegreeEntity = new ExamRuleEntity();
+        academicDegreeEntity.setId(ruleId);
+        return academicDegreeEntity;
+    }
     default SubjectEntity mapSubject(Long subId) {
         SubjectEntity academicDegreeEntity = new SubjectEntity();
         academicDegreeEntity.setId(subId);

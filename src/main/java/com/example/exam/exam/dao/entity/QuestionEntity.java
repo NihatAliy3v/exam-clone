@@ -21,7 +21,7 @@ public class QuestionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_seq_generator")
-    @SequenceGenerator(name = "question_seq_generator", sequenceName = "question_SEQ", allocationSize = 1)
+    @SequenceGenerator(name = "question_seq_generator" , sequenceName = "question_SEQ" , allocationSize = 1)
     Long id;
 
     String name;
@@ -32,15 +32,17 @@ public class QuestionEntity {
     byte score;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(referencedColumnName = "id", name = "subject_id")
+    @JoinColumn(referencedColumnName = "id" , name = "subject_id")
     SubjectEntity subjectEntity;
 
-    @OneToMany(mappedBy = "questionEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "questionEntity" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("questionEntity")
     List<OptionEntity> optionEntities;
 
-    @ManyToMany(mappedBy = "questionEntities")
-    @JsonIgnore
-    List<ExamEntity> examEntities;
+
+
+    @OneToOne(mappedBy = "questionEntity")
+    @JsonIgnoreProperties("questionEntity")
+    Image image;
 
 }

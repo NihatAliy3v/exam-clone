@@ -1,5 +1,6 @@
 package com.example.exam.exam.controller;
 
+import com.example.exam.exam.dao.entity.QuestionEntity;
 import com.example.exam.exam.dao.entity.enums.QuestionType;
 import com.example.exam.exam.model.RequestDto.QuestionRequestDto;
 import com.example.exam.exam.model.ResponseDto.QuestionResponseDto;
@@ -21,9 +22,8 @@ public class QuestionController {
     private final QuestionService questionService;
 
         @PostMapping(consumes = "application/json", produces = "application/json")
-        public SimpleMessageDto<QuestionRequestDto> addQuestion(@Valid @RequestBody QuestionRequestDto questionRequestDto) throws JsonProcessingException {
-            questionService.addQuestion(questionRequestDto);
-            return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value());
+        public SimpleMessageDto<Long> addQuestion(@Valid @RequestBody QuestionRequestDto questionRequestDto) throws JsonProcessingException {
+            return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value(),questionService.addQuestion(questionRequestDto));
         }
 
     @GetMapping

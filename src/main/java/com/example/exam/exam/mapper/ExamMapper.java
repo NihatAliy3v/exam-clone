@@ -17,13 +17,11 @@ import java.util.stream.Collectors;
 public interface ExamMapper {
 
 //    @Mapping(target = "questionEntities",expression = "java(mapQuestion(examRequestDto.getQuestionId()))")
-   @Mapping(target = "questionEntities",source = "questionId")
     @Mapping(target = "employees",expression = "java(mapEmployee(examRequestDto.getEmployeesId()))")
     @Mapping(target = "personEntities",expression = "java(mapPerson(examRequestDto.getPersonId()))")
     ExamEntity dtoToEntity(ExamRequestDto examRequestDto);
     @Mapping(target = "employeesId",expression = "java(mapEmployees(examEntity.getEmployees()))")
     @Mapping(target = "personId",expression = "java(mapPersons(examEntity.getPersonEntities()))")
-    @Mapping(target = "questionId",source = "questionEntities")
     @Mapping(target = "imageDto", source = "imageEntities")
     ExamResponseDto entityToDto(ExamEntity examEntity);
 

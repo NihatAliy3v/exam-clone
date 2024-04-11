@@ -41,6 +41,5 @@ public class ExamResponseDto {
 
     List<Long> personId;
 
-    List<Long> questionId;
 
 }

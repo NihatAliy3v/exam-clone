@@ -13,6 +13,7 @@ import java.util.List;
 public interface ImageMapper {
 
     @Mapping(target = "examEntity.id", source = "imageRequestDto.examId")
+    @Mapping(target = "questionEntity.id", source = "imageRequestDto.questionId")
     Image dtoToEntity(ImageRequestDto imageRequestDto);
 
     ImageResponseDto entityToDto(Image image);

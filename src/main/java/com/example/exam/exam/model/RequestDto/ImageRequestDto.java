@@ -24,4 +24,6 @@ public class ImageRequestDto {
     private byte[] imageData;
 
     Long examId;
+
+    Long questionId;
 }
