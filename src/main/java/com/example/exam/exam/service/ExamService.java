@@ -92,4 +92,18 @@ public class ExamService {
         examRepository.save(examEntity);
 
     }
+
+    public List<ExamResponseDto> getExamByPersonId(Long id){
+
+        List<ExamEntity> examEntities = examRepository.findByPersonsId(id);
+
+        return examMapper.entityToDto(examEntities);
+    }
+
+    public List<ExamResponseDto> getExamByEmpId(Long id){
+
+        List<ExamEntity> examEntities = examRepository.findByEmployeesId(id);
+
+        return examMapper.entityToDto(examEntities);
+    }
 }

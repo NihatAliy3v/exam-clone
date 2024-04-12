@@ -1,7 +1,6 @@
 package com.example.exam.exam.dao.entity;
 
 
-import com.example.exam.exam.dao.entity.enums.QuestionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -26,8 +25,7 @@ public class QuestionEntity {
 
     String name;
 
-    @Enumerated(EnumType.STRING)
-    QuestionType questionType;
+
 
     byte score;
 

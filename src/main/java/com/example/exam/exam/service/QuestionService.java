@@ -3,18 +3,24 @@ package com.example.exam.exam.service;
 import com.example.exam.exam.dao.entity.ExamDescriptionEntity;
 import com.example.exam.exam.dao.entity.OptionEntity;
 import com.example.exam.exam.dao.entity.QuestionEntity;
+import com.example.exam.exam.dao.entity.SubjectEntity;
 import com.example.exam.exam.dao.repository.OptionRepository;
 import com.example.exam.exam.dao.repository.QuestionRepository;
 import com.example.exam.exam.mapper.QuestionMapper;
+import com.example.exam.exam.mapper.SubjectMapper;
 import com.example.exam.exam.model.RequestDto.QuestionRequestDto;
 import com.example.exam.exam.model.ResponseDto.QuestionResponseDto;
+import com.example.exam.exam.model.ResponseDto.SubjectResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -22,6 +28,7 @@ import java.util.List;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final SubjectMapper subjectMapper;
     private final QuestionMapper questionMapper;
     private final OptionRepository optionRepository;
 
@@ -68,11 +75,41 @@ return questionEntity.getId();
         return questionMapper.entityToDtos(questionEntities);
     }
 
-    public List<QuestionResponseDto> getQuestionsByDesc(Long examDescriptionEntity) {
+    public List<QuestionResponseDto> getQuestionsByDesc(Long examDescriptionEntityId) {
+        List<QuestionEntity> questionEntities = questionRepository.findAllByExamDescriptionEntitiesId(examDescriptionEntityId);
 
-        List<QuestionEntity> questionEntities = questionRepository.findAllByExamDescriptionEntitiesId(examDescriptionEntity);
-        return questionMapper.entityToDtos(questionEntities);
+        // Soruları konularına göre gruplamak için bir Map oluştur
+        Map<SubjectEntity, List<QuestionResponseDto>> subjectQuestionMap = new HashMap<>();
+        for (QuestionEntity question : questionEntities) {
+            SubjectEntity subject = question.getSubjectEntity();
+            if (!subjectQuestionMap.containsKey(subject)) {
+                subjectQuestionMap.put(subject, new ArrayList<>());
+            }
+            subjectQuestionMap.get(subject).add(questionMapper.entityToDto(question));
+        }
+
+        // SubjectEntity'yi dönüştürmek için gerekirse bir SubjectResponseDto oluştur
+        List<QuestionResponseDto> questionResponseDtos = new ArrayList<>();
+        for (Map.Entry<SubjectEntity, List<QuestionResponseDto>> entry : subjectQuestionMap.entrySet()) {
+            SubjectEntity subject = entry.getKey();
+            List<QuestionResponseDto> questionDtosForSubject = entry.getValue();
+
+            // SubjectResponseDto oluştur
+            SubjectResponseDto subjectResponseDto = subjectMapper.entityToDto(subject);
+
+            // Her bir soruya ilgili konuyu ekle
+            for (QuestionResponseDto questionDto : questionDtosForSubject) {
+                questionDto.setSubjectId(subjectResponseDto);
+            }
+
+            // Konuya ait soruları listeye ekle
+            questionResponseDtos.addAll(questionDtosForSubject);
+        }
+
+        return questionResponseDtos;
     }
+
+
 }
 
 //    public List<Long> rastgeleSayilarUret(int altSinir, int ustSinir, int miktar, Long subjectId, QuestionType questionType) {

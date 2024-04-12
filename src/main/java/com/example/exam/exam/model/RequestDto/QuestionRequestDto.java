@@ -1,6 +1,5 @@
 package com.example.exam.exam.model.RequestDto;
 
-import com.example.exam.exam.dao.entity.enums.QuestionType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -27,8 +26,7 @@ public class QuestionRequestDto {
 
     Long subjectId;
 
-    @Enumerated(EnumType.STRING)
-    QuestionType questionType;
+
 
     @NotNull(message = "Option alanı boş olamaz")
     List<OptionRequestDto> options;

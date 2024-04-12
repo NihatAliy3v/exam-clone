@@ -40,6 +40,19 @@ public class ExamController {
                 examService.getExam(id));
     }
 
+    @GetMapping("/byPerson/{id}")
+    public SimpleMessageDto<List<ExamResponseDto>> getExamByPersonId(@PathVariable Long id) {
+        return new SimpleMessageDto<>(HttpStatus.OK.getReasonPhrase(),
+                HttpStatus.OK.value(),
+                examService.getExamByPersonId(id));
+    }
+
+    @GetMapping("/byEmployee/{id}")
+    public SimpleMessageDto<List<ExamResponseDto>> getExamByEmpId(@PathVariable Long id) {
+        return new SimpleMessageDto<>(HttpStatus.OK.getReasonPhrase(),
+                HttpStatus.OK.value(),
+                examService.getExamByEmpId(id));
+    }
     @PutMapping("/{id}")
     public SimpleMessageDto<String> updateExam(@RequestBody ExamRequestDto examRequestDto,@PathVariable Long id) {
 

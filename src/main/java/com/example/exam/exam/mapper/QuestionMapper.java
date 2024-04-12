@@ -17,7 +17,7 @@ public interface QuestionMapper {
     @Mapping(target = "optionEntities",source = "options")
     QuestionEntity dtoToEntity(QuestionRequestDto questionRequestDto);
 
-    @Mapping(target = "subjectId", source = "subjectEntity.id")
+    @Mapping(target = "subjectId", source = "subjectEntity")
     @Mapping(target = "imageDto", source = "image")
     @Mapping(target = "options",source = "optionEntities")
     QuestionResponseDto entityToDto(QuestionEntity questionEntity);
