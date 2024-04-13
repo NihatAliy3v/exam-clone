@@ -48,7 +48,6 @@ public class ExamDescriptionService {
 
             for (var question : questionEntities) {
                 List<OptionEntity> optionEntities = optionRepository.findAllByQuestionEntityId(question.getId());
-                System.out.println(optionEntities);
                 question.setOptionEntities(optionEntities);
             }
 
