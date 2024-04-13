@@ -1,9 +1,12 @@
 package com.example.exam.exam.service.auth;
 
+import com.example.exam.exam.dao.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
+import org.springframework.security.core.GrantedAuthority;
+
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -13,11 +16,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
 
     private static final String SECRET_KEY = "4E645267556B58703272357538782F413F4428472B4B6250655368566D597133";
+
+
+    public Long extractUserIdFromAccessToken(String token) {
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("Token cannot be null or empty");
+        }
+
+        try {
+            Claims claims = extractAllClaims(token);
+
+
+            return claims.get("userId", Long.class);
+        } catch (Exception e) {
+            // Handle exceptions gracefully (e.g., log, return null)
+            return null;
+        }
+    }
+
+
     public String extractUsername(String token) {
         return extractClaim(token,Claims::getSubject);
     }
@@ -34,12 +57,17 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
+        UserEntity userEntity = (UserEntity) userDetails; // Cast UserDetails to UserEntity
+        extraClaims.put("userId", userEntity.getId());
+        extraClaims.put("roles", userEntity.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()));
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 2588))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
