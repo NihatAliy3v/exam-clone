@@ -1,7 +1,7 @@
 package com.example.exam.exam.auth;
 
+import com.example.exam.exam.model.RequestDto.AdminRegisterRequestDto;
 import com.example.exam.exam.model.RequestDto.AuthRequestDto;
-import com.example.exam.exam.model.RequestDto.UserRegisterRequestDto;
 import com.example.exam.exam.model.ResponseDto.AuthenticationDto;
 import com.example.exam.exam.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +18,17 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/register")
+    @PostMapping("/admin/register")
     public ResponseEntity<AuthenticationDto> register(
-            @RequestBody UserRegisterRequestDto requestDto
+            @RequestBody AdminRegisterRequestDto requestDto
     ) {
-        return ResponseEntity.ok(authService.register(requestDto));
+        return ResponseEntity.ok(authService.registerAdmin(requestDto));
     }
 
-    @PostMapping("/login")
+    @PostMapping("/admin/login")
     public ResponseEntity<AuthenticationDto> register(
             @RequestBody AuthRequestDto authRequestDto
     ) {
-        return ResponseEntity.ok(authService.authenticate(authRequestDto));
+        return ResponseEntity.ok(authService.loginAdmin(authRequestDto));
     }
 }

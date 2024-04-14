@@ -1,5 +1,6 @@
 package com.example.exam.exam.dao.entity;
 
+import com.example.exam.exam.dao.entity.enums.ERole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,6 @@ public class RoleEntity  {
     @SequenceGenerator(name = "role_seq_generator", sequenceName = "role_SEQ", allocationSize = 1)
     private Long id;
 
-    private String role;
+    private ERole role;
 
 }

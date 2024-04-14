@@ -1,6 +1,6 @@
 package com.example.exam.exam.service.auth;
 
-import com.example.exam.exam.dao.entity.UserEntity;
+import com.example.exam.exam.dao.entity.AdminEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -57,7 +57,7 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        UserEntity userEntity = (UserEntity) userDetails; // Cast UserDetails to UserEntity
+        AdminEntity userEntity = (AdminEntity) userDetails; // Cast UserDetails to UserEntity
         extraClaims.put("userId", userEntity.getId());
         extraClaims.put("roles", userEntity.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -67,7 +67,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 22))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 2255))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

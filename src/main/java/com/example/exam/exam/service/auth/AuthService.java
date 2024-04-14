@@ -1,9 +1,11 @@
 package com.example.exam.exam.service.auth;
 
-import com.example.exam.exam.dao.entity.UserEntity;
+import com.example.exam.exam.dao.entity.AdminEntity;
+import com.example.exam.exam.dao.entity.enums.ERole;
+import com.example.exam.exam.dao.repository.RoleRepository;
 import com.example.exam.exam.dao.repository.UserRepository;
 import com.example.exam.exam.model.RequestDto.AuthRequestDto;
-import com.example.exam.exam.model.RequestDto.UserRegisterRequestDto;
+import com.example.exam.exam.model.RequestDto.AdminRegisterRequestDto;
 import com.example.exam.exam.model.ResponseDto.AuthenticationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,15 +19,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
-    public AuthenticationDto register(UserRegisterRequestDto requestDto) {
-        //TODO: unique check exception
-        var user = UserEntity.builder()
+
+
+    public AuthenticationDto registerAdmin(AdminRegisterRequestDto requestDto) {
+
+        var user = AdminEntity.builder()
                 .fullName(requestDto.getFullName())
                 .username(requestDto.getUsername())
                 .password(passwordEncoder.encode(requestDto.getPassword()))
+                .eRole(ERole.ADMIN)
                 .build();
 
         userRepository.save(user);
@@ -35,22 +41,18 @@ public class AuthService {
                 .build();
     }
 
-    public AuthenticationDto authenticate(AuthRequestDto authRequestDto) {
+    public AuthenticationDto loginAdmin(AuthRequestDto authRequestDto) {
         authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authRequestDto.getUsername(),
-                        authRequestDto.getPassword()
-                )
-        );
+                new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()
+                ));
 
-        UserEntity user = userRepository.findUserByUsername(authRequestDto.getUsername()).orElseThrow();
+        AdminEntity user = userRepository.findUserByUsername(authRequestDto.getUsername()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationDto.builder()
-                .token(jwtToken)
-                .build();
+
+        return AuthenticationDto.builder().token(jwtToken).build();
     }
 
-    public static UserEntity getUser() {
-        return (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public static AdminEntity getUser() {
+        return (AdminEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

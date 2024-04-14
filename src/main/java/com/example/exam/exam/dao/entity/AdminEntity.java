@@ -1,5 +1,6 @@
 package com.example.exam.exam.dao.entity;
 
+import com.example.exam.exam.dao.entity.enums.ERole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,17 +10,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
-@Entity(name = "users")
+@Entity(name = "admins")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity implements UserDetails {
+public class AdminEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_generator")
@@ -34,22 +35,26 @@ public class UserEntity implements UserDetails {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    List<RoleEntity> roleEntities;
+//    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+//    @JoinTable(name = "user_role",
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+//    )
+//    List<RoleEntity> roleEntities;
+
+    @Enumerated(EnumType.STRING)
+    private ERole eRole;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.roleEntities == null) {
+        if (this.eRole == null) {
             return Collections.emptyList();
         }
-        return this.roleEntities.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_"+role.getRole()))
-                .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.eRole.name()));
+        return authorities;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
