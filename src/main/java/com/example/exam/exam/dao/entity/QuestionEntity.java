@@ -43,6 +43,6 @@ public class QuestionEntity {
 
     @OneToOne(mappedBy = "questionEntity")
     @JsonIgnoreProperties("questionEntity")
-    Image image;
+    QuestionImageEntity image;
 
 }

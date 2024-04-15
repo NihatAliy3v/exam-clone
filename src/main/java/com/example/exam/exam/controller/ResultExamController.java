@@ -22,9 +22,9 @@ public class ResultExamController {
 
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public SimpleMessageDto<ResultRequestDto> addSurvey(@RequestBody ResultRequestDto resultDto) {
-        resultExamService.addResult(resultDto);
-        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value());
+    public SimpleMessageDto<Map<String,Integer>> addSurvey(@RequestBody ResultRequestDto resultDto) {
+
+        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value(),resultExamService.addResult(resultDto));
     }
 
     @GetMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.example.exam.exam.controller;
 
 import com.example.exam.exam.service.ImageService;
+import com.example.exam.exam.service.QuestionImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,20 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @RestController
-@RequestMapping("/image")
+@RequestMapping("/v1/question/image")
 @RequiredArgsConstructor
-public class ImageController {
+public class QuestionImageController {
 
-    private final ImageService imageService;
+    private final QuestionImageService imageService;
 
     @PostMapping(consumes = "multipart/form-data", produces = "application/json")
-    public void  uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("examId") Long examId,@RequestParam("questionId") Long questionId) throws IOException {
-        imageService.uploadImage(file,examId,questionId);
+    public void  uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("questionId") Long questionId) throws IOException {
+        imageService.uploadImage(file,questionId);
     }
 
     @GetMapping("/{fileName}")

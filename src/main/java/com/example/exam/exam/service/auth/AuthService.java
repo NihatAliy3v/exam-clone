@@ -1,9 +1,11 @@
 package com.example.exam.exam.service.auth;
 
 import com.example.exam.exam.dao.entity.AdminEntity;
+import com.example.exam.exam.dao.entity.SubjectEntity;
 import com.example.exam.exam.dao.entity.enums.ERole;
 import com.example.exam.exam.dao.repository.RoleRepository;
 import com.example.exam.exam.dao.repository.UserRepository;
+import com.example.exam.exam.exception.CustomerException;
 import com.example.exam.exam.model.RequestDto.AuthRequestDto;
 import com.example.exam.exam.model.RequestDto.AdminRegisterRequestDto;
 import com.example.exam.exam.model.ResponseDto.AuthenticationDto;
@@ -14,18 +16,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
 
 
     public AuthenticationDto registerAdmin(AdminRegisterRequestDto requestDto) {
+        if (!userRepository.findAll().isEmpty()) {
+            List<AdminEntity> adminEntities = userRepository.findAll();
+
+            for (var admin : adminEntities) {
+                if (requestDto.getUsername().equals(admin.getUsername())) {
+                    throw new CustomerException("İstifadəçi adı mövcuddur");
+                }
+            }
+        }
 
         var user = AdminEntity.builder()
                 .fullName(requestDto.getFullName())

@@ -1,14 +1,16 @@
 package com.example.exam.exam.service;
 
 import com.example.exam.exam.dao.entity.*;
-import com.example.exam.exam.dao.repository.ExamRepository;
-import com.example.exam.exam.dao.repository.ResultExamRepository;
+import com.example.exam.exam.dao.entity.enums.EResultType;
+import com.example.exam.exam.dao.repository.*;
+import com.example.exam.exam.mapper.ExamDescriptionMapper;
 import com.example.exam.exam.mapper.ResultExamMapper;
 import com.example.exam.exam.model.RequestDto.ResultRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,59 +22,86 @@ public class ResultExamService {
     private final ResultExamRepository resultExamRepository;
     private final ExamRepository examRepository;
     private final ResultExamMapper resultExamMapper;
+    private final ExamDescriptionRepository examDescriptionRepository;
+    private final OptionRepository optionRepository;
 
 
-    public void addResult(ResultRequestDto resultDto) {
+    public Map<String, Integer> addResult(ResultRequestDto resultDto) {
         log.info("ActionLog.start result add method");
 
-        resultExamRepository.save(resultExamMapper.dtoToEntity(resultDto));
+        ResultExamEntity resultExamEntity=resultExamMapper.dtoToEntity(resultDto);
+        Map<SubjectEntity, List<Long>> sortedQuestions = new HashMap<>();
 
-        log.info("ActionLog.end result add method");
+        Map<String, Integer> subjectScores = new HashMap<>();
+        int totalScore = 0;
+
+
+        List<ExamDescriptionEntity> examDescriptionEntities = examDescriptionRepository.findByExamEntityId(resultDto.getExamId());
+
+        for (var examDesc : examDescriptionEntities) {
+
+            List<QuestionEntity> questionEntities = examDesc.getQuestionEntities();
+            for (var question : questionEntities) {
+                // Sorunun ait olduğu konuyu alın
+                SubjectEntity subjectName = question.getSubjectEntity();
+
+                if (sortedQuestions.containsKey(subjectName)) {
+                    sortedQuestions.get(subjectName).add(question.getId());
+                } else {
+                    List<Long> questions = new ArrayList<>();
+                    questions.add(question.getId());
+                    sortedQuestions.put(subjectName, questions);
+                }
+            }
+        }
+
+        for (Map.Entry<SubjectEntity, List<Long>> entry : sortedQuestions.entrySet()) {
+            SubjectEntity subjectName = entry.getKey();
+            List<Long> questions = entry.getValue();
+            ExamDescriptionEntity examDescriptionEntity = examDescriptionRepository.findBySubjectEntity(subjectName);
+            int score = examDescriptionEntity.getQuestionScore();
+            int total = 0;
+            int trueCount = 0;
+            int falseCount = 0;
+            for (Long question : questions) {
+                List<OptionEntity> correctOptions = optionRepository.findByQuestionEntityIdAndTypeTrue(question);
+                for (var option : correctOptions) {
+                    for (var optionD : resultDto.getSoptionId()) {
+                        if (option.getId().equals(optionD)) {
+                            total += score;
+                            trueCount++;
+                        } else {
+                            falseCount++;
+                        }
+                    }
+                }
+            }
+          SubjectResultEntity subjectResultEntity=new SubjectResultEntity();
+            subjectResultEntity.setSubject(entry.getKey());
+            subjectResultEntity.setResult(resultExamEntity);
+            subjectResultEntity.setScore(total);
+            subjectResultEntity.setFalseCount(falseCount);
+            subjectResultEntity.setTrueCount(trueCount);
+
+            resultExamEntity.getSubjectResults().add(subjectResultEntity);
+
+            subjectScores.put(subjectName.getName(), total);
+        }
+
+        for (Map.Entry<String, Integer> entry : subjectScores.entrySet()) {
+            totalScore += entry.getValue();
+            resultDto.setTotalScore(totalScore);
+        }
+        ExamEntity exam=examRepository.findById(resultDto.getExamId()).get();
+        if (totalScore>=exam.getExamScore()){
+            resultDto.setEResultType(EResultType.SUCCESS);
+        }else {
+            resultDto.setEResultType(EResultType.FAILED);
+        }
+        resultExamRepository.save(resultExamMapper.dtoToEntity(resultDto));
+        return subjectScores;
     }
 
-
-    //    public Map<Long, Map<Long, Map<String, Object>>> getResult(Long id) {
-//        log.info("ActionLog.start result get method with id: {}", id);
-//
-//        Map<Long, Map<Long, Map<String, Object>>> questionOptionInfoMap = new HashMap<>();
-//
-//        ExamEntity examEntity = examRepository.findById(id).get();
-//
-//        List<ResultExamEntity> resultSurvey = resultExamRepository.findAllResultByExamEntity(examEntity);
-//        for (ResultExamEntity resultSurveys : resultSurvey) {
-//            List<OptionEntity> optionEntities = resultSurveys.getOptions();
-//
-//            // Calculate counts for each option
-//            Map<Long, Integer> optionCountMap = new HashMap<>();
-//            for (OptionEntity optionEntity : optionEntities) {
-//                Long optionId = optionEntity.getId();
-//                optionCountMap.put(optionId, optionCountMap.getOrDefault(optionId, 0) + 1);
-//            }
-//
-//            // Populate the result map
-//            for (OptionEntity optionEntity : optionEntities) {
-//                Long questionId = optionEntity.getQuestionEntity().getId();
-//                Long optionId = optionEntity.getId();
-//
-//                // Get or create the map for the specific question
-//                Map<Long, Map<String, Object>> optionInfoMap = questionOptionInfoMap.computeIfAbsent(questionId, k -> new HashMap<>());
-//
-//                // Increment the count in the inner map
-//                Map<String, Object> innerMap = optionInfoMap.getOrDefault(optionId, new HashMap<>());
-//                innerMap.put("count", optionCountMap.getOrDefault(optionId, 0));
-//                optionInfoMap.put(optionId, innerMap);
-//
-//                // Calculate the percentage for the current option
-//                double optionPercentage = optionCountMap.getOrDefault(optionId, 0) / (double) optionEntities.size() * 100.0;
-//
-//                // Update the percentage in the inner map
-//                innerMap.put("percentage", optionPercentage);
-//            }
-//        }
-//
-//        log.info("ActionLog.end result get method with id: {}", id);
-//        return questionOptionInfoMap;
-//    }
     public Map<String, Double> calculateScoresPerSubject(Long id) {
         Map<String, Double> scoresPerSubject = new HashMap<>();
 

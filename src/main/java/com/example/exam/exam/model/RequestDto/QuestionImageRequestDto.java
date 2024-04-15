@@ -6,17 +6,14 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class ImageRequestDto {
+public class QuestionImageRequestDto {
 
     private String name;
-
-    private String nameUI;
 
     private String type;
 
@@ -25,6 +22,5 @@ public class ImageRequestDto {
     @Lob
     private byte[] imageData;
 
-    Long examId;
-
+    Long questionId;
 }

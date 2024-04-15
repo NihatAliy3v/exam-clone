@@ -20,7 +20,7 @@ public class ExamRuleController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     public SimpleMessageDto<?> addRule(@RequestBody ExamRuleRequestDto ruleRequestDto){
         ruleService.addRule(ruleRequestDto);
-        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value());
+        return new SimpleMessageDto<>("Qayda yaradıldı", HttpStatus.CREATED.value());
     }
 
     @GetMapping

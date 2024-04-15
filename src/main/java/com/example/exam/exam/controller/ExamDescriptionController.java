@@ -4,6 +4,7 @@ import com.example.exam.exam.model.RequestDto.ExamDescriptionRequestDto;
 import com.example.exam.exam.model.ResponseDto.ExamDescriptionResponseDto;
 import com.example.exam.exam.model.ResponseDto.SimpleMessageDto;
 import com.example.exam.exam.service.ExamDescriptionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,9 @@ public class ExamDescriptionController {
     private final ExamDescriptionService examDescriptionService;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public SimpleMessageDto<ExamDescriptionRequestDto> addExamQuestion(@RequestBody ExamDescriptionRequestDto examDescriptionRequestDto) {
+    public SimpleMessageDto<ExamDescriptionRequestDto> addExamQuestion(@Valid @RequestBody ExamDescriptionRequestDto examDescriptionRequestDto) {
         examDescriptionService.addExamQuestions(examDescriptionRequestDto);
-        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(),
+        return new SimpleMessageDto<>("İmtahana suallar əlavə edildi",
                 HttpStatus.CREATED.value());
     }
 

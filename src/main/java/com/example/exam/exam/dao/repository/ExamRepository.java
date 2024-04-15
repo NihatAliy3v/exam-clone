@@ -1,5 +1,6 @@
 package com.example.exam.exam.dao.repository;
 
+import com.example.exam.exam.dao.entity.ExamDescriptionEntity;
 import com.example.exam.exam.dao.entity.ExamEntity;
 import com.example.exam.exam.dao.entity.QuestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,5 @@ public interface ExamRepository extends JpaRepository<ExamEntity,Long> {
             "INNER JOIN LEARNING.EXAM_EMPLOYEES p ON e.ID = p.EXAM_ID " +
             "WHERE p.EMPLOYEE_ID =:id", nativeQuery = true)
     List<ExamEntity> findByEmployeesId(Long id);
+
 }

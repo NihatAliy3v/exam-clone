@@ -18,7 +18,6 @@ public class ErrorHandler {
 
     @ExceptionHandler(CustomerException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-
     SimpleMessageDto<ExceptionDto> handle(CustomerException exception) {
         log.info("ActionLog.handle.error CustomerException handled");
         return new SimpleMessageDto<>(exception.getMessage(), HttpStatus.BAD_REQUEST.value());
@@ -34,7 +33,7 @@ public class ErrorHandler {
 
 
     @ExceptionHandler(value = ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionDto paramsValidationHandler(ConstraintViolationException exception) {
         return new ExceptionDto(exception.getMessage());
     }

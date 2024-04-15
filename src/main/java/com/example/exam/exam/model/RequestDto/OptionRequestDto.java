@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class OptionRequestDto {
 
-    @NotBlank(message = "dwdwed")
+    @NotBlank(message = "dfeefeee")
     String name;
 
     @Builder.Default

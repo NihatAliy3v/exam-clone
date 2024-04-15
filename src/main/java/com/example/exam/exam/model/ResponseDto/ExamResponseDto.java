@@ -32,10 +32,11 @@ public class ExamResponseDto {
 
     int expirationTime;
 
-    @Builder.Default
-    Boolean answerStatus=false;
+    int examScore;
 
-    List<ImageResponseDto> imageDto;
+    Boolean calculator;
+
+    ImageResponseDto imageDto;
 
     List<Long> employeesId;
 

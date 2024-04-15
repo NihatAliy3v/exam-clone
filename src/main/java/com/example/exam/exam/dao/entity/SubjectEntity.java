@@ -29,4 +29,8 @@ public class SubjectEntity {
     @OneToMany(mappedBy = "subjectEntity")
     @JsonIgnoreProperties("subjectEntity")
     List<ExamDescriptionEntity> examDescriptionEntities;
+
+    @OneToMany(mappedBy = "subject")
+    @JsonIgnoreProperties("subject")
+    private List<SubjectResultEntity> subjectResults;
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,6 +23,7 @@ import java.util.List;
 @Builder
 public class    ExamRequestDto {
 
+    @NotBlank(message = "İmtahanın ")
     String name;
 
     @Temporal(TemporalType.DATE)
@@ -32,6 +34,12 @@ public class    ExamRequestDto {
 
     @Min(value = 1,message = "İmtahan müddətini yazın")
     int expirationTime;
+
+    @Builder.Default
+    Boolean calculator=false;
+
+    @Min(value = 1,message = "İmtahan keçid balını yazın")
+    int examScore;
 
     @Enumerated(EnumType.STRING)
     ExamStatus examStatus;

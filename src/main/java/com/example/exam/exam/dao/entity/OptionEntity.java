@@ -21,7 +21,7 @@ public class OptionEntity {
     @SequenceGenerator(name = "option_seq_generator", sequenceName = "option_SEQ", allocationSize = 1)
     Long id;
 
-    @NotBlank(message = "Option name cannot be empty")
+    @NotBlank(message = "TESTTTT")
     String name;
 
     @Builder.Default

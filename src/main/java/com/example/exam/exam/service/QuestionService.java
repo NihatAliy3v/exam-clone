@@ -6,6 +6,7 @@ import com.example.exam.exam.dao.entity.QuestionEntity;
 import com.example.exam.exam.dao.entity.SubjectEntity;
 import com.example.exam.exam.dao.repository.OptionRepository;
 import com.example.exam.exam.dao.repository.QuestionRepository;
+import com.example.exam.exam.exception.CustomerException;
 import com.example.exam.exam.mapper.QuestionMapper;
 import com.example.exam.exam.mapper.SubjectMapper;
 import com.example.exam.exam.model.RequestDto.QuestionRequestDto;
@@ -35,6 +36,17 @@ public class QuestionService {
 
     public Long addQuestion(QuestionRequestDto questionRequestDto) throws JsonProcessingException {
         log.info("ActionLog.start question add method");
+
+
+        if (!questionRepository.findAll().isEmpty()) {
+            List<QuestionEntity> subjectEntities = questionRepository.findAll();
+
+            for (var subject : subjectEntities) {
+                if (questionRequestDto.getName().equals(subject.getName())) {
+                    throw new CustomerException("Bu sual mövcuddur");
+                }
+            }
+        }
 
         QuestionEntity questionEntity=questionMapper.dtoToEntity(questionRequestDto);
         questionRepository.save(questionEntity);

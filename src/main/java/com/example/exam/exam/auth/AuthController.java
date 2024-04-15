@@ -4,6 +4,7 @@ import com.example.exam.exam.model.RequestDto.AdminRegisterRequestDto;
 import com.example.exam.exam.model.RequestDto.AuthRequestDto;
 import com.example.exam.exam.model.ResponseDto.AuthenticationDto;
 import com.example.exam.exam.service.auth.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/admin/register")
-    public ResponseEntity<AuthenticationDto> register(
+    public ResponseEntity<AuthenticationDto> register(@Valid
             @RequestBody AdminRegisterRequestDto requestDto
     ) {
         return ResponseEntity.ok(authService.registerAdmin(requestDto));

@@ -1,6 +1,7 @@
 package com.example.exam.exam.auth;
 
 import com.example.exam.exam.dao.repository.UserRepository;
+import com.example.exam.exam.exception.CustomerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new CustomerException("İstifadçi adı mövcud deyil"));
     }
 
     @Bean

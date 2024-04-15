@@ -22,7 +22,9 @@ public class QuestionController {
 
         @PostMapping(consumes = "application/json", produces = "application/json")
         public SimpleMessageDto<Long> addQuestion(@Valid @RequestBody QuestionRequestDto questionRequestDto) throws JsonProcessingException {
-            return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED.value(),questionService.addQuestion(questionRequestDto));
+            return new SimpleMessageDto<>("Sual yaradıldı",
+                    HttpStatus.CREATED.value(),
+                    questionService.addQuestion(questionRequestDto));
         }
 
     @GetMapping

@@ -12,17 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "exam_image")
-public class Image {
+@Table(name = "question_image")
+public class QuestionImageEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_seq_generator")
-    @SequenceGenerator(name = "image_seq_generator", sequenceName = "image_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "question_image_seq_generator")
+    @SequenceGenerator(name = "question_image_seq_generator", sequenceName = "question_image_SEQ", allocationSize = 1)
     private Long id;
 
     private String name;
-
-    private String nameUI;
 
     private String type;
 
@@ -31,8 +29,8 @@ public class Image {
     @Lob
     private byte[] imageData;
 
-    @OneToOne
-    @JoinColumn(name = "exam_id", referencedColumnName = "id")
-    ExamEntity examEntity;
 
+    @OneToOne
+    @JoinColumn(name = "question_id")
+    QuestionEntity questionEntity;
 }

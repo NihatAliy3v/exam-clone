@@ -1,6 +1,5 @@
 package com.example.exam.exam.controller;
 
-import com.example.exam.exam.model.RequestDto.LoginDto;
 import com.example.exam.exam.model.RequestDto.OptionRequestDto;
 import com.example.exam.exam.model.ResponseDto.OptionResponseDto;
 import com.example.exam.exam.model.ResponseDto.QuestionResponseDto;

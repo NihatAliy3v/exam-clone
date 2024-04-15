@@ -27,20 +27,15 @@ public class AdminEntity implements UserDetails {
     @SequenceGenerator(name = "user_seq_generator", sequenceName = "user_SEQ", allocationSize = 1)
     private Long id;
 
+    @Column(unique = true)
     private String fullName;
 
+    @Column(unique = true)
     private String username;
     private String password;
 
     @Column(name = "is_active")
     private Boolean isActive;
-
-//    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
-//    @JoinTable(name = "user_role",
-//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-//    )
-//    List<RoleEntity> roleEntities;
 
     @Enumerated(EnumType.STRING)
     private ERole eRole;

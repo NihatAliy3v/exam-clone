@@ -21,7 +21,7 @@ public class ExamController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public SimpleMessageDto<ExamEntity> addExam(@Valid @RequestBody ExamRequestDto examRequestDto) {
-        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(),
+        return new SimpleMessageDto<>("İmtahan yarandı",
                 HttpStatus.CREATED.value(),
                 examService.addExam(examRequestDto));
     }
@@ -58,7 +58,7 @@ public class ExamController {
 
         examService.updateExam(id,examRequestDto);
 
-        return new SimpleMessageDto<>(HttpStatus.CREATED.getReasonPhrase(),
+        return new SimpleMessageDto<>("İmtahana şəxslər əlavə eidldi",
                 HttpStatus.CREATED.value());
     }
 }

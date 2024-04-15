@@ -5,6 +5,7 @@ import com.example.exam.exam.dao.entity.*;
 import com.example.exam.exam.dao.entity.enums.ExamPersonType;
 import com.example.exam.exam.dao.entity.enums.ExamStatus;
 import com.example.exam.exam.dao.repository.*;
+import com.example.exam.exam.exception.CustomerException;
 import com.example.exam.exam.mapper.ExamMapper;
 import com.example.exam.exam.model.RequestDto.ExamRequestDto;
 import com.example.exam.exam.model.ResponseDto.ExamResponseDto;
@@ -32,6 +33,16 @@ public class ExamService {
 
     public ExamEntity addExam(ExamRequestDto examRequestDto) {
         log.info("ActionLog.start exam add method");
+
+        if (!examRepository.findAll().isEmpty()) {
+            List<ExamEntity> subjectEntities = examRepository.findAll();
+
+            for (var subject : subjectEntities) {
+                if (examRequestDto.getName().equals(subject.getName())) {
+                    throw new CustomerException("İmtahan mövcuddur");
+                }
+            }
+        }
 
         LocalDate bugun = LocalDate.now();
 

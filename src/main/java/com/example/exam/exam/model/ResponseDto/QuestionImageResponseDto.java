@@ -1,7 +1,6 @@
-package com.example.exam.exam.model.RequestDto;
+package com.example.exam.exam.model.ResponseDto;
 
 
-import jakarta.persistence.Lob;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +10,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class LoginDto {
+public class QuestionImageResponseDto {
 
-    private String fin;
+    Long id;
+
+    String name;
+
+    String url;
 }

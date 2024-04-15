@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 public interface ResultExamMapper {
 
     @Mapping(target = "examEntity.id", source = "examId")
-//  @Mapping(target = "employees", expression = "java(mapEmployees(resultDto.getSemployeeId()))")
+//    @Mapping(target = "employee.empId", source = "employeeId")
+    @Mapping(target = "person.id", source = "personId")
     @Mapping(target = "options", expression = "java(mapOptions(resultDto.getSoptionId()))")
     ResultExamEntity dtoToEntity(ResultRequestDto resultDto);
 
     List<ResultRequestDto> entityToDtos(List<ResultExamEntity> resultSurveyEntities);
 
-    //  @Mapping(target = "semployeeId", expression = "java(mapEmployeeIds(resultSurveyEntity.getEmployees()))")
     @Mapping(target = "soptionId", expression = "java(mapOptionIds(resultSurveyEntity.getOptions()))")
     ResultRequestDto entityToDto(ResultExamEntity resultSurveyEntity);
 

@@ -37,6 +37,11 @@ public class ExamEntity {
 
     int expirationTime;
 
+    @Builder.Default
+    Boolean calculator=false;
+
+    int examScore;
+
     @Enumerated(EnumType.STRING)
     ExamStatus examStatus;
 
@@ -60,9 +65,9 @@ public class ExamEntity {
     )
     List<PersonEntity> personEntities;
 
-    @OneToMany(mappedBy = "examEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "examEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("examEntity")
-    List<Image> imageEntities;
+    Image imageEntities;
 
 
     @OneToMany(mappedBy = "examEntity")
