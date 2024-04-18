@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public  class PersonEntity implements UserDetails {
+public  class PersonEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq_generator")
@@ -30,13 +30,10 @@ public  class PersonEntity implements UserDetails {
 
     String surname;
 
-    String password;
-
-    String username;
-
     String fatherName;
 
     String fin;
+
 
     String cardNo;
 
@@ -47,33 +44,4 @@ public  class PersonEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private ERole eRole;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.eRole == null) {
-            return Collections.emptyList();
-        }
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.eRole.name()));
-        return authorities;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

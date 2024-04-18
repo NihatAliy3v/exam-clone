@@ -2,6 +2,7 @@ package com.example.exam.exam.auth;
 
 import com.example.exam.exam.model.RequestDto.AdminRegisterRequestDto;
 import com.example.exam.exam.model.RequestDto.AuthRequestDto;
+import com.example.exam.exam.model.RequestDto.AuthRequestDtoPerson;
 import com.example.exam.exam.model.ResponseDto.AuthenticationDto;
 import com.example.exam.exam.service.auth.AuthService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/admin/register")
     public ResponseEntity<AuthenticationDto> register(@Valid
-            @RequestBody AdminRegisterRequestDto requestDto
+                                                      @RequestBody AdminRegisterRequestDto requestDto
     ) {
         return ResponseEntity.ok(authService.registerAdmin(requestDto));
     }
@@ -31,5 +32,12 @@ public class AuthController {
             @RequestBody AuthRequestDto authRequestDto
     ) {
         return ResponseEntity.ok(authService.loginAdmin(authRequestDto));
+    }
+
+    @PostMapping("/person/login")
+    public ResponseEntity<Long> register(
+            @RequestBody AuthRequestDtoPerson authRequestDto
+    ) {
+        return ResponseEntity.ok(authService.login(authRequestDto));
     }
 }

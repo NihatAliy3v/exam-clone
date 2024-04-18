@@ -11,6 +11,7 @@ import com.example.exam.exam.model.ResponseDto.OptionResponseDto;
 import com.example.exam.exam.model.ResponseDto.PersonResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,11 +25,14 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
     private final LogMessageRepository logMessageRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void addPerson(PersonRequestDto personRequestDto) {
         log.info("ActionLog.start person add method");
 
         PersonEntity personEntity = personMapper.dtoToEntity(personRequestDto);
+
+
         personRepository.save(personEntity);
 
         LogEntity logMessage = new LogEntity();
@@ -49,4 +53,6 @@ public class PersonService {
         log.info("ActionLog.end person get method");
         return personMapper.entityToDto(personEntities);
     }
+
+
 }
