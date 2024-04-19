@@ -37,8 +37,7 @@ public class ExamEntity {
 
     int expirationTime;
 
-    @Builder.Default
-    Boolean calculator=false;
+    Boolean calculator;
 
     int examScore;
 

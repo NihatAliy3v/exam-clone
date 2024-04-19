@@ -34,7 +34,7 @@ public class QuestionImageService {
                     .name(imageFile.getOriginalFilename())
                     .type(imageFile.getContentType())
                     .imageData(ImageUtils.compressImage(imageFile.getBytes()))
-                    .url("http://localhost:8083/image/" + imageFile.getOriginalFilename())
+                    .url("http://localhost:8083/v1/question/image/" + imageFile.getOriginalFilename())
                     .questionId(questionId)
                     .build();
             imageRepository.save(imageMapper.dtoToEntity(imageToSave));

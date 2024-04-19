@@ -83,7 +83,7 @@ public class ResultExamService {
             subjectResultEntity.setFalseCount(falseCount);
             subjectResultEntity.setTrueCount(trueCount);
 
-            resultExamEntity.getSubjectResults().add(subjectResultEntity);
+           // resultExamEntity.getSubjectResults().add(subjectResultEntity);
 
             subjectScores.put(subjectName.getName(), total);
         }

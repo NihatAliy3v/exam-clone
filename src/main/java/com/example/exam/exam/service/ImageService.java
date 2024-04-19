@@ -33,7 +33,7 @@ public class ImageService {
                     .name(imageFile.getOriginalFilename())
                     .type(imageFile.getContentType())
                     .imageData(ImageUtils.compressImage(imageFile.getBytes()))
-                    .url("http://localhost:8083/image/" + imageFile.getOriginalFilename())
+                    .url("http://localhost:8083/v1/exam/image/" + imageFile.getOriginalFilename())
                     .examId(examId)
                     .nameUI(nameUI)
                     .build();

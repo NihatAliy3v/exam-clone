@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                                 auth.requestMatchers("v1/auth/**").permitAll()
-                                        .requestMatchers("/v1/**").authenticated()
+                                        .requestMatchers("/v1/**").permitAll()
                                         .requestMatchers(permitSwagger).permitAll()
                                         .anyRequest().authenticated());
 
